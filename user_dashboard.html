@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Dashboard</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Welcome, {{ user.name }}</h2>
+
+        <div class="top-buttons">
+            <!-- زر تسجيل الخروج -->
+            <form action="{{ url_for('main.logout') }}" method="get">
+                <button type="submit" class="action-btn">Logout</button>
+            </form>
+
+            <!-- زر البروفايل -->
+            <form action="{{ url_for('main.edit_profile') }}" method="get">
+                <button type="submit" class="action-btn">Profile</button>
+            </form>
+        </div>
+
+        <h3>Upload New File</h3>
+        <form method="POST" action="/upload" enctype="multipart/form-data">
+            <input type="file" name="file" required>
+            <button type="submit">Upload</button>
+        </form>
+
+        <h3>My Files</h3>
+<div class="table-container">
+    <table class="files-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Filename</th>
+                <th>Uploaded At</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for file in files %}
+            <tr>
+                <td>{{ file.id }}</td>
+                <td>{{ file.filename }}</td>
+                <td>{{ file.uploaded_at.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                <td>
+                    <form method="GET" action="{{ url_for('main.download_file', file_id=file.id) }}" style="display:inline;">
+                        <button type="submit" class="action-btn">Download</button>
+                    </form>
+                    <form method="POST" action="{{ url_for('main.delete_file', file_id=file.id) }}" style="display:inline;">
+                        <button type="submit" class="action-btn danger" onclick="return confirm('Are you sure?')">Delete</button>
+                    </form>
+                    <form method="GET" action="{{ url_for('main.integrity_check', file_id=file.id) }}" style="display:inline;">
+                        <button type="submit" class="action-btn warning">Check Integrity</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Verify OTP</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="container">
+    <h2>Verify Your OTP</h2>
+    {% if qr_code %}
+      <p>Scan this QR code with Google Authenticator:</p>
+      <img src="data:image/png;base64,{{ qr_code }}" alt="QR Code"><br><br>
+    {% endif %}
+    {% if error %}
+      <p style="color:red">{{ error }}</p>
+    {% endif %}
+    <form method="POST">
+      <input type="text" name="otp" placeholder="Enter OTP" required>
+      <button type="submit">Verify</button>
+    </form>
+  </div>
+</body>
+</html>

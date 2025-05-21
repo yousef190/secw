@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Signup</title>
+  <link rel="stylesheet" href="/static/style.css" />
+  <style>
+    .flash-error {
+      color: red;
+      margin-bottom: 15px;
+    }
+    .flash-success {
+      color: green;
+      margin-bottom: 15px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Flash messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="flash-{{ 'error' if category == 'error' else 'success' }}">
+            {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <form method="POST" action="{{ url_for('main.signup') }}" novalidate>
+      <h2>Sign Up</h2>
+
+      <label for="name">Full Name</label>
+      <input
+        type="text"
+        id="name"
+        name="name"
+        required
+        autocomplete="name"
+      />
+
+      <label for="email">Email</label>
+      <input
+        type="email"
+        id="email"
+        name="email"
+        required
+        autocomplete="email"
+      />
+
+      <label for="password">Password</label>
+      <input
+        type="password"
+        id="password"
+        name="password"
+        required
+        autocomplete="new-password"
+      />
+
+      <button type="submit">Sign Up</button>
+
+      <p>
+        Already have an account?
+        <a href="{{ url_for('main.login_page') }}">Login</a>
+      </p>
+    </form>
+  </div>
+
+  <script>
+    document.querySelector("form").addEventListener("submit", function (e) {
+      const password = document.querySelector('input[name="password"]').value;
+
+      const lengthCheck = password.length >= 8;
+      const uppercaseCheck = /[A-Z]/.test(password);
+      const lowercaseCheck = /[a-z]/.test(password);
+      const numberCheck = /\d/.test(password);
+      const specialCharCheck = /[^A-Za-z0-9]/.test(password);
+
+      if (!lengthCheck) {
+        alert("Password must be at least 8 characters long.");
+        e.preventDefault();
+        return;
+      }
+
+      if (
+        !uppercaseCheck ||
+        !lowercaseCheck ||
+        !numberCheck ||
+        !specialCharCheck
+      ) {
+        alert(
+          "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character."
+        );
+        e.preventDefault();
+      }
+    });
+  </script>
+</body>
+</html>

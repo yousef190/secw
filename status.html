@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Status</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h2 style="text-align: center;" id="status-title">Status</h2>
+    <div class="notification" id="status-message">
+      <!-- Message will be inserted here dynamically -->
+    </div>
+    <div style="text-align: center; margin-top: 20px;">
+      <a href="my_files.html">Back to My Files</a>
+    </div>
+  </div>
+
+  <script>
+    // مثال على استخدام الرسائل عبر query params (مثلاً ?status=success&msg=File uploaded successfully)
+    const params = new URLSearchParams(window.location.search);
+    const message = params.get("msg");
+    const isSuccess = params.get("status") === "success";
+
+    const msgBox = document.getElementById("status-message");
+    const title = document.getElementById("status-title");
+
+    if (message) {
+      msgBox.innerText = message;
+      msgBox.style.backgroundColor = isSuccess ? "#27ae60" : "#c0392b";
+      title.innerText = isSuccess ? "Success" : "Error";
+    } else {
+      msgBox.innerText = "No status provided.";
+      msgBox.style.backgroundColor = "#7f8c8d";
+    }
+  </script>
+</body>
+</html>
